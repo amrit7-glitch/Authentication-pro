@@ -64,7 +64,7 @@ const registerUser = asyncHandler(async (req, res, next) => {
         });
 
         const verifyUrl =
-            `http://localhost:3000/api/v1/users/verify-email/${verificationToken}`;
+`${process.env.BACKEND_URL}/api/v1/users/verify-email/${verificationToken}`;
 
         await sendEmail(
             existingUser.email,
@@ -138,7 +138,7 @@ const registerUser = asyncHandler(async (req, res, next) => {
     });
 
     const verifyUrl =
-        `http://localhost:3000/api/v1/users/verify-email/${verificationToken}`;
+    `${process.env.BACKEND_URL}/api/v1/users/verify-email/${verificationToken}`;
 
     await sendEmail(
     user.email,
@@ -386,7 +386,7 @@ const forgotPassword = asyncHandler(async (req, res, next) => {
     });
 
     const resetUrl =
-        `http://localhost:5173/reset-password/${resetToken}`;
+  `${process.env.FRONTEND_URL}/reset-password/${token}`;
 
     await sendEmail(
         user.email,
