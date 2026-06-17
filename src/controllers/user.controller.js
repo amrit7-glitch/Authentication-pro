@@ -64,7 +64,7 @@ const registerUser = asyncHandler(async (req, res, next) => {
         });
 
         const verifyUrl =
-`${process.env.BACKEND_URL}/api/v1/users/verify-email/${verificationToken}`;
+`${process.env.BACKEND_URL}/api/v1/verify-email/${verificationToken}`;
 
         await sendEmail(
             existingUser.email,
@@ -96,9 +96,9 @@ const registerUser = asyncHandler(async (req, res, next) => {
 
         return res.status(200).json(
             new ApiResponse(
-                true,
-                "Verification email sent again",
-                null
+                200,
+                null,
+                "Verification email sent again"
             )
         );
     }
@@ -138,7 +138,7 @@ const registerUser = asyncHandler(async (req, res, next) => {
     });
 
     const verifyUrl =
-    `${process.env.BACKEND_URL}/api/v1/users/verify-email/${verificationToken}`;
+    `${process.env.BACKEND_URL}/api/v1/verify-email/${verificationToken}`;
 
     await sendEmail(
     user.email,
@@ -162,9 +162,9 @@ const registerUser = asyncHandler(async (req, res, next) => {
 
     return res.status(201).json(
         new ApiResponse(
-            true,
-            "User registered successfully. Please verify your email.",
-            null
+            201,
+            null,
+            "User registered successfully. Please verify your email."
         )
     );
 });
@@ -239,11 +239,9 @@ if (!user.password) {
     .cookie("refreshToken", refreshToken, options)
     .status(200).json(
         new ApiResponse(
-            true,
-            "Login successful",
+            200,
             userWithoutPassword,
-            
-
+            "Login successful"
         )
     );
 });
@@ -262,9 +260,9 @@ const logoutUser = asyncHandler(async (req, res) => {
         .clearCookie("refreshToken", options)
         .json(
             new ApiResponse(
-                true,
-                "Logged out successfully",
-                null
+                200,
+                null,
+                "Logged out successfully"
             )
         );
 });
@@ -284,7 +282,7 @@ const UserProfile = asyncHandler(async (req, res) => {
 
     return res.status(200).json(
         new ApiResponse(
-            true,
+            200,
             user,
             "Profile fetched"
         )
@@ -341,9 +339,9 @@ asyncHandler(async (req,res,next)=>{
 
     return res.status(200).json(
         new ApiResponse(
-            true,
-            "Email verified successfully",
-            null
+            200,
+            null,
+            "Email verified successfully"
         )
     );
 });
@@ -386,7 +384,7 @@ const forgotPassword = asyncHandler(async (req, res, next) => {
     });
 
     const resetUrl =
-  `${process.env.FRONTEND_URL}/reset-password/${token}`;
+  `${process.env.FRONTEND_URL}/reset-password/${resetToken}`;
 
     await sendEmail(
         user.email,

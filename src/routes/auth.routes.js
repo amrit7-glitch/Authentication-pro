@@ -42,7 +42,7 @@ router.get(
     res
   .cookie("accessToken", accessToken, options)
   .cookie("refreshToken", refreshToken, options)
-  .redirect("http://localhost:5173/profile");
+  .redirect(`${process.env.FRONTEND_URL}/profile`);
   }
 );
 
