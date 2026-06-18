@@ -17,35 +17,35 @@ router.get(
 
 router.get(
   "/google/callback",
-  passport.authenticate("google", {
-    session: false,
-  }),
-  async (req, res) => {
-    const user = req.user;
+  (req, res, next) => {
+    passport.authenticate("google", { session: false }, (err, user, info) => {
+      if (err) {
+        console.error("Passport Auth Error:", err);
+        return res.redirect(`${process.env.FRONTEND_URL}/login?error=auth_failed`);
+      }
+      if (!user) {
+        console.error("Passport Auth Failed - No User:", info);
+        return res.redirect(`${process.env.FRONTEND_URL}/login?error=unauthorized`);
+      }
+      
+      // If authentication succeeded, proceed to issue tokens
+      const accessToken = generateAccessToken(user);
+      const refreshToken = generateRefreshToken(user);
 
-    const accessToken = generateAccessToken(user);
-    const refreshToken = generateRefreshToken(user);
+      const options = {
+        httpOnly: true,
+        secure: true,
+        sameSite: "none",
+      };
 
-    const userWithoutPassword = {
-      id: user.id,
-      name: user.name,
-      email: user.email,
-      role: user.role,
-    };
-
-    const options = {
-      httpOnly: true,
-      secure: true,
-      sameSite: "none",
-    };
-
-    const frontendUrl = process.env.FRONTEND_URL.replace(/\/$/, "");
-    const redirectUrl = `${frontendUrl}/profile`;
-    console.log(`Redirecting to: ${redirectUrl}`);
-    res
-      .cookie("accessToken", accessToken, options)
-      .cookie("refreshToken", refreshToken, options)
-      .redirect(redirectUrl);
+      const frontendUrl = process.env.FRONTEND_URL.replace(/\/$/, "");
+      const redirectUrl = `${frontendUrl}/profile`;
+      
+      res
+        .cookie("accessToken", accessToken, options)
+        .cookie("refreshToken", refreshToken, options)
+        .redirect(redirectUrl);
+    })(req, res, next);
   }
 );
 
