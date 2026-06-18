@@ -1,10 +1,7 @@
-import * as brevo from "@getbrevo/brevo";
+import { Resend } from "resend";
 
-const apiInstance = new brevo.TransactionalEmailsApi();
-
-apiInstance.setApiKey(
-    brevo.TransactionalEmailsApiApiKeys.apiKey,
-    process.env.BREVO_API_KEY
+const resend = new Resend(
+    process.env.RESEND_API_KEY
 );
 
 export const sendEmail = async (
@@ -12,27 +9,18 @@ export const sendEmail = async (
     subject,
     html
 ) => {
-    const sendSmtpEmail =
-        new brevo.SendSmtpEmail();
+    const { data, error } =
+        await resend.emails.send({
+            from: process.env.EMAIL,
+            to,
+            subject,
+            html,
+        });
 
-    sendSmtpEmail.subject = subject;
-    sendSmtpEmail.htmlContent = html;
+    if (error) {
+        console.error(error);
+        throw new Error("Failed to send email");
+    }
 
-    sendSmtpEmail.sender = {
-        name: "Auth Project",
-        email: process.env.EMAIL,
-    };
-
-    sendSmtpEmail.to = [
-        {
-            email: to,
-        },
-    ];
-
-    const result =
-        await apiInstance.sendTransacEmail(
-            sendSmtpEmail
-        );
-
-    console.log("Email sent:", result);
+    console.log("Email sent:", data);
 };
