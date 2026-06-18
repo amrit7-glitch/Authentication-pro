@@ -35,8 +35,8 @@ router.get(
 
     const options = {
       httpOnly: true,
-      secure: false,
-      sameSite: "lax",
+      secure: true,
+      sameSite: "none",
     };
 
     res

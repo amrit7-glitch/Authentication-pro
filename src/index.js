@@ -15,7 +15,7 @@ import authRouter from "./routes/auth.routes.js";
 const app = express();
 
 app.use(cors({
-  origin: process.env.FRONTEND_URL,
+  origin: ["https://authentication-frontend-dun.vercel.app", process.env.FRONTEND_URL].filter(Boolean),
   credentials: true,
   methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
   allowedHeaders: ["Content-Type", "Authorization"]
@@ -23,6 +23,7 @@ app.use(cors({
 
 // Middleware
 app.use(express.json({limit:'16kb'}));
+app.use(express.urlencoded({ extended: true, limit: "16kb" }));
 app.use(cookieParser());
 app.use(passport.initialize());
 
@@ -32,10 +33,8 @@ console.log("CORS Origin configured as:", process.env.FRONTEND_URL);
 
 
 // Routes
-//app.use("/api/v1/auth", authRoutes);
 app.use("/api/v1/auth", authRouter);
 app.use("/api/v1", userRouter);
-
 
 // Health check
 app.get("/", (req, res) => {
@@ -44,7 +43,14 @@ app.get("/", (req, res) => {
   });
 });
 
-//console.log(process.env.DATABASE_URL);
+// 404 Handler
+app.use((req, res, next) => {
+  res.status(404).json({
+    success: false,
+    message: `Route ${req.originalUrl} not found`
+  });
+});
+
 // Global error handler
 app.use((err, req, res, next) => {
   console.error(err);
