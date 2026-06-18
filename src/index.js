@@ -32,16 +32,19 @@ console.log("CORS Origin configured as:", process.env.FRONTEND_URL);
 
 
 
-// Routes
-app.use("/api/v1/auth", authRouter);
-app.use("/api/v1", userRouter);
-
 // Health check
 app.get("/", (req, res) => {
   res.json({
     message: "API running"
   });
 });
+
+// Routes
+app.use("/api/v1/auth", authRouter);
+app.use("/auth", authRouter); // Fallback for root auth
+
+app.use("/api/v1", userRouter);
+app.use("/", userRouter); // Fallback for root routes
 
 // 404 Handler
 app.use((req, res, next) => {
