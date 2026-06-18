@@ -14,6 +14,8 @@ import userRouter from "./routes/user.router.js";
 import authRouter from "./routes/auth.routes.js";
 const app = express();
 
+app.set("trust proxy", 1); // Trust Render's proxy
+
 app.use(cors({
   origin: ["https://authentication-frontend-dun.vercel.app", process.env.FRONTEND_URL].filter(Boolean),
   credentials: true,
