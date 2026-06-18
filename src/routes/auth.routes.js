@@ -39,10 +39,11 @@ router.get(
       sameSite: "none",
     };
 
+    const frontendUrl = process.env.FRONTEND_URL.replace(/\/$/, "");
     res
-  .cookie("accessToken", accessToken, options)
-  .cookie("refreshToken", refreshToken, options)
-  .redirect(`${process.env.FRONTEND_URL}/profile`);
+      .cookie("accessToken", accessToken, options)
+      .cookie("refreshToken", refreshToken, options)
+      .redirect(`${frontendUrl}/profile`);
   }
 );
 
