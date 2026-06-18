@@ -1,8 +1,6 @@
 import { Resend } from "resend";
 
-const resend = new Resend(
-    process.env.RESEND_API_KEY
-);
+const resend = new Resend(process.env.RESEND_API_KEY);
 
 export const sendEmail = async (
     to,
@@ -17,10 +15,12 @@ export const sendEmail = async (
             html,
         });
 
+    console.log("RESEND DATA:", data);
+    console.log("RESEND ERROR:", error);
+
     if (error) {
-        console.error(error);
-        throw new Error("Failed to send email");
+        throw error;
     }
 
-    console.log("Email sent:", data);
+    return data;
 };
