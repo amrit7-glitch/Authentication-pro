@@ -7,7 +7,6 @@ apiInstance.setApiKey(
     brevo.TransactionalEmailsApiApiKeys.apiKey,
     process.env.BREVO_API_KEY
 );
-
 export const sendEmail = async (
     to,
     subject,
