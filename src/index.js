@@ -48,9 +48,10 @@ app.use("/", userRouter); // Fallback for root routes
 
 // 404 Handler
 app.use((req, res, next) => {
+  console.log(`404 Not Found: ${req.method} ${req.originalUrl}`);
   res.status(404).json({
     success: false,
-    message: `Route ${req.originalUrl} not found`
+    message: `API Route ${req.originalUrl} not found on Backend`
   });
 });
 

@@ -40,10 +40,12 @@ router.get(
     };
 
     const frontendUrl = process.env.FRONTEND_URL.replace(/\/$/, "");
+    const redirectUrl = `${frontendUrl}/profile`;
+    console.log(`Redirecting to: ${redirectUrl}`);
     res
       .cookie("accessToken", accessToken, options)
       .cookie("refreshToken", refreshToken, options)
-      .redirect(`${frontendUrl}/profile`);
+      .redirect(redirectUrl);
   }
 );
 
