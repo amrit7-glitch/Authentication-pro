@@ -1,35 +1,38 @@
-import brevo from "@getbrevo/brevo";
+import * as brevo from "@getbrevo/brevo";
 
-const apiInstance =
-    new brevo.TransactionalEmailsApi();
+const apiInstance = new brevo.TransactionalEmailsApi();
 
 apiInstance.setApiKey(
     brevo.TransactionalEmailsApiApiKeys.apiKey,
     process.env.BREVO_API_KEY
 );
+
 export const sendEmail = async (
     to,
     subject,
     html
 ) => {
-    const email =
+    const sendSmtpEmail =
         new brevo.SendSmtpEmail();
 
-    email.subject = subject;
-    email.htmlContent = html;
+    sendSmtpEmail.subject = subject;
+    sendSmtpEmail.htmlContent = html;
 
-    email.sender = {
-        name: "Auth System",
-        email: "devloperamrit@gmail.com",
+    sendSmtpEmail.sender = {
+        name: "Auth Project",
+        email: process.env.EMAIL,
     };
 
-    email.to = [
+    sendSmtpEmail.to = [
         {
             email: to,
         },
     ];
 
-    await apiInstance.sendTransacEmail(
-        email
-    );
+    const result =
+        await apiInstance.sendTransacEmail(
+            sendSmtpEmail
+        );
+
+    console.log("Email sent:", result);
 };
