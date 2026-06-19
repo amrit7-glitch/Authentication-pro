@@ -43,7 +43,7 @@ router.get(
       };
 
       const frontendUrl = process.env.FRONTEND_URL.replace(/\/$/, "");
-      const redirectUrl = `${frontendUrl}/profile`;
+      const redirectUrl = `${frontendUrl}/api/v1/profile`;
       
       res
         .cookie("accessToken", accessToken, options)
