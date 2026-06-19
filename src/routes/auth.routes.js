@@ -34,6 +34,9 @@ router.get(
       const accessToken = generateAccessToken(user);
       const refreshToken = generateRefreshToken(user);
 
+      console.log("Access Token:", accessToken);
+      console.log("Refresh Token:", refreshToken);  
+
       const options = {
         httpOnly: true,
         secure: true,
