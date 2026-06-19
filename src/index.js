@@ -43,10 +43,10 @@ app.get("/", (req, res) => {
 
 // Routes
 app.use("/api/v1/auth", authRouter);
-app.use("/auth", authRouter); // Fallback for root auth
+// app.use("/auth", authRouter); // Fallback for root auth
 
 app.use("/api/v1", userRouter);
-app.use("/", userRouter); // Fallback for root routes
+// app.use("/", userRouter); // Fallback for root routes
 
 // 404 Handler
 app.use((req, res, next) => {
