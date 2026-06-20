@@ -4,7 +4,6 @@ import { generateAccessToken, generateRefreshToken } from "../utils/tokens.js";
 
 const router = Router();
 
-// ✅ This is now reachable at /auth/google
 router.get(
   "/google",
   passport.authenticate("google", {
@@ -25,28 +24,12 @@ router.get(
       const accessToken = generateAccessToken(user);
       const refreshToken = generateRefreshToken(user);
 
-      const cookieOptions = {
-        httpOnly: true,
-        secure: true,
-        sameSite: "none",
-        maxAge: 15 * 60 * 1000 // 15 minutes for access token
-      };
-
-      const refreshOptions = {
-        httpOnly: true,
-        secure: true,
-        sameSite: "none",
-        maxAge: 7 * 24 * 60 * 60 * 1000 // 7 days
-      };
-
       const frontendUrl = process.env.FRONTEND_URL.replace(/\/$/, "");
 
-      // ✅ Redirect to /auth/success — gives browser time to store cookie
-      //    before profile API is called
-      res
-        .cookie("accessToken", accessToken, cookieOptions)
-        .cookie("refreshToken", refreshToken, refreshOptions)
-        .redirect(`${frontendUrl}/auth/success`);
+      // ✅ Send tokens in URL — cookies don't work cross-domain
+      return res.redirect(
+        `${frontendUrl}/auth/success?accessToken=${accessToken}&refreshToken=${refreshToken}`
+      );
 
     })(req, res, next);
   }
