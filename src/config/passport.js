@@ -7,7 +7,7 @@ passport.use(
     {
       clientID: process.env.GOOGLE_CLIENT_ID,
       clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-      // ✅ Must match exactly what's in Google Cloud Console
+      
       callbackURL: `${process.env.BACKEND_URL}/auth/google/callback`,
       proxy: true,
     },
@@ -28,8 +28,7 @@ passport.use(
           });
         }
 
-        // ✅ If user exists but registered with email/password,
-        //    still allow Google login
+        
         return done(null, user);
       } catch (error) {
         console.error("Google Strategy Error:", error);

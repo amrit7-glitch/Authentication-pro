@@ -3,7 +3,7 @@ import { ApiError } from "../utils/apiError.js";
 
 export const verifyJWT = (req, res, next) => {
   try {
-    // ✅ Check Authorization header first, then cookie as fallback
+    
     const authHeader = req.headers?.authorization;
     const token =
       (authHeader && authHeader.startsWith("Bearer ")

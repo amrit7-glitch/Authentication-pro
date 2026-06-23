@@ -14,7 +14,7 @@ const app = express();
 app.set("trust proxy", 1);
 
 app.use(cors({
-  // ✅ Put your actual Render frontend URL here
+  
   origin: process.env.FRONTEND_URL,
   credentials: true,
   methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
@@ -30,7 +30,7 @@ app.get("/", (req, res) => {
   res.json({ message: "API running" });
 });
 
-// ✅ Single consistent mount — no duplicates
+// Single consistent mount — no duplicates
 app.use("/api/v1", userRouter);
 app.use("/auth", authRouter);
 
